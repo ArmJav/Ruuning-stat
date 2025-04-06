@@ -15,7 +15,7 @@ def generate_random_statistics(n: int) -> list[list]:
 
 # Функция для расчета вероятности каждого места для каждого участника
 def get_probability_vector() -> dict:
-    history = generate_random_statistics()
+    history = generate_random_statistics(25)
     n = len(history)
     probs = {"pl1": [0, 0, 0, 0, 0, 0], "pl2": [0, 0, 0, 0, 0, 0], "pl3": [0, 0, 0, 0, 0, 0], "pl4": [0, 0, 0, 0, 0, 0],
              "pl5": [0, 0, 0, 0, 0, 0], "pl6": [0, 0, 0, 0, 0, 0]}
