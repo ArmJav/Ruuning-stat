@@ -1,6 +1,5 @@
 from random import shuffle
 import random
-import matplotlib.pyplot as plt
 from backend.models import engine,get_fiz, get_race_history
 
 
@@ -51,16 +50,6 @@ def get_strength(probs: dict) -> dict:
 def get_athlete_params():
     return get_fiz(engine=engine)
 
-
-def create_plot(progress_data):
-    for i in range(1, 7):
-        x = [i for i in range(len(progress_data['pl' + str(i)]))]
-        plt.plot(x, progress_data['pl' + str(i)], label=('pl' + str(i)))
-    plt.xlabel('Секунды', fontsize=12, color='grey')
-    plt.ylabel('Метры', fontsize=12, color='grey')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
 
 # def calculate_strength(distribution):
 #     weights = {1: 1.0, 2: 0.8, 3: 0.6, 4: 0.4, 5: 0.2, 6: 0.0}
