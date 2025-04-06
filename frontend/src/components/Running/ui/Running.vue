@@ -5,6 +5,7 @@ import { LoadingOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 // import runner_svg from '@/assets/runner_svg.vue';
 import runnersvg_2 from '@/assets/runnersvg_2.vue';
 import { message } from 'ant-design-vue';
+import { startRace } from '../api/start_race';
 // import { io } from 'socket.io-client'
 
 
@@ -37,6 +38,22 @@ const runners_data = ref({
 }
 
 )
+
+
+const get_start_race = async () => {
+    loading_running.value = true
+
+    const respons = await startRace();
+    
+    console.log(respons)
+
+//     dataTable.value = Object.entries(respons).map(([_, values], index) => {
+//   return {
+//     name: `Участник ${index + 1}`,
+//     probability: values.map((v: number) => v.toFixed(2))
+//   };
+// });
+}
 
 const runners = ref<Runner[]>([
     { id: 1, name: 'У1', key: 'runner_one', position: 0 },
@@ -98,7 +115,7 @@ const startRace = () => {
             
         </a-modal>
         <div class="flex justify-center gap-3 items-center">
-            <button v-if="!loading_running" @click="startRace"
+            <button v-if="!loading_running" @click="get_start_race()"
                 class="bg-[#29A851] h-[40px] w-[240px] text-white rounded-[15px] cursor-pointer hover:opacity-35 active:bg-[#5CD683] active:opacity-100 transition duration-300  ">
                 ВКЛЮЧИТЬ СИМУЛЯЦИЮ
             </button>
