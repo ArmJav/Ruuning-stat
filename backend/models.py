@@ -188,20 +188,20 @@ def athlet_created():
 
     session.commit()
 
-# Основной код
-if __name__ == "__main__": 
-    env_path = Path('.') / '.env'
-    load_dotenv(dotenv_path=env_path)
+# # Основной код
+# if __name__ == "__main__": 
+#     env_path = Path('.') / '.env'
+#     load_dotenv(dotenv_path=env_path)
 
-    if (DATABASE_URL := os.getenv("DATABASE_URL")) is None:
-        raise ValueError("DATABASE_URL не установлен")
-    create_engine(DATABASE_URL)
-    inspector = inspect(engine)
-    if 'athletes' not in inspector.get_table_names():
-        create_tables(DATABASE_URL)
-        create_random_races()
-        athlet_created()
-    else:
-        print('Таблицы уже созданы')
+#     if (DATABASE_URL := os.getenv("DATABASE_URL")) is None:
+#         raise ValueError("DATABASE_URL не установлен")
+#     create_engine(DATABASE_URL)
+#     inspector = inspect(engine)
+#     if 'athletes' not in inspector.get_table_names():
+#         create_tables(DATABASE_URL)
+#         create_random_races()
+#         athlet_created()
+#     else:
+#         print('Таблицы уже созданы')
 
 
