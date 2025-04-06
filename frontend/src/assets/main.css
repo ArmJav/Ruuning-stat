@@ -55,7 +55,7 @@ body {
   background-color: var(--color-grey);
 }
 
-@media (max-width: 420px) {
+@media (max-width: 430px) {
   body, p, h1, h2, h3, h4, h5, h6, button, input, span, a, table, tbody  {
     font-size: 70%; /* уменьшение на 30% */
   }

@@ -81,21 +81,24 @@ onMounted(() => {
                 <Table :results="dataTable" :header="headTable" />
             </template>
         </Block>
-        <Block title="🏅Таблица вероятности топ 2 или топ 3">
+        <Block title="🏅Таблица вероятности топ-2 и топ-3">
             <template #default>
                 <Table :results="dataTableTop" :header="headTableTop" />
             </template>
         </Block>
-        <Block title="🏁Статистика">
-            <template #default>
-                <Table :results="dataTableStat" :header="headTableStat" />
-            </template>
-        </Block>
+        
         <Block title="🏅Таблица вероятности занятия 1го и 2го мест">
             <template #default>
                 <Table :results="dataTableTwo" :header="headTableTwo" />
             </template>
         </Block>
+
+        <Block title="🏁Статистика">
+            <template #default>
+                <Table :results="dataTableStat" :header="headTableStat" />
+            </template>
+        </Block>
+        
 
     </div>
 </template>

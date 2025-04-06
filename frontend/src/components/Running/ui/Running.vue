@@ -60,7 +60,7 @@ const startRace = () => {
         if (allFinished) {
             clearInterval(interval)
             loading_running.value = false
-            message.success('Гонка окончен')
+            message.success('Забег окончен')
 
         }
     }, 1000)
@@ -82,10 +82,6 @@ const startRace = () => {
                 <p>СИМУЛЯЦИЯ</p>
             </button>
 
-            <div @click="resetProgress" class="flex items-center gap-2 text-gray-500 h-fit cursor-pointer">
-                <p>СБРОС</p>
-                <DeleteOutlined />
-            </div>
         </div>
 
         <Block title="Атлет" widht_block='100%'>
@@ -122,37 +118,38 @@ const startRace = () => {
                     <div class="w-full h-full flex flex-col gap-[30px] relative">
                         <div class="runner h-[28px] bg-[#CF1322] transition-width"
                             :style="{ width: String(runners_data.runner_one) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] absolute transition-left" color="#CF1322"
+                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#CF1322"
                             :style="{ left: String(runners_data.runner_one) + '%' }" />
+
                         </div>
 
-                        <div class="runner h-[28px] bg-[#C4218A]"
+                        <div class="runner h-[28px] bg-[#C4218A] transition-width"
                             :style="{ width: String(runners_data.runner_two) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] absolute" color="#C4218A"
+                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#C4218A"
                             :style="{ left: String(runners_data.runner_two) + '%' }" />
                         </div>
 
-                        <div class="runner h-[28px] bg-[#08A4C4]"
+                        <div class="runner h-[28px] bg-[#08A4C4] transition-width"
                             :style="{ width: String(runners_data.runner_three) + '%'}">
-                            <runnersvg_2 class="w-fit h-[28px] absolute" color="#08A4C4"
+                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#08A4C4"
                             :style="{ left: String(runners_data.runner_three) + '%' }" />
                         </div>
 
-                        <div class="runner h-[28px] bg-[#D78739]"
+                        <div class="runner h-[28px] bg-[#D78739] transition-width"
                             :style="{ width: String(runners_data.runner_four) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] absolute" color="#D78739"
+                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#D78739"
                             :style="{ left: String(runners_data.runner_four) + '%' }" />
                         </div>
 
-                        <div class="runner h-[28px] bg-green-400"
+                        <div class="runner h-[28px] bg-green-400 transition-width"
                             :style="{ width: String(runners_data.runner_five) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] absolute" color="#05df72"
+                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#05df72"
                             :style="{ left: String(runners_data.runner_five) + '%' }" />
                         </div>
 
-                        <div class="runner h-[28px] bg-blue-700"
+                        <div class="runner h-[28px] bg-blue-700 transition-width"
                             :style="{ width: String(runners_data.runner_six) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] absolute" color="#1447e6"
+                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#1447e6"
                             :style="{ left: String(runners_data.runner_six) + '%' }" />
                         </div>
                     </div>
@@ -170,14 +167,6 @@ const startRace = () => {
 </template>
 
 <style scoped>
-.race-track {
-    position: relative;
-
-    width: 100%;
-    height: 200px;
-    background: #f0f0f0;
-    border: 1px solid #ccc;
-}
 
 .runner {
     width: 60px;
