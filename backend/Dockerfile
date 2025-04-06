@@ -10,5 +10,5 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . .
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-CMD [ "python", "main.py" ]
+# Сначала запускаем models.py, затем main.py и запускаем сервер
+CMD python models.py && python main.py && uvicorn main:app --host 0.0.0.0 --port 8000

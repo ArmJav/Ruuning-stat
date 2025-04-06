@@ -5,7 +5,7 @@ import { LoadingOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 // import runner_svg from '@/assets/runner_svg.vue';
 import runnersvg_2 from '@/assets/runnersvg_2.vue';
 import { message } from 'ant-design-vue';
-import { startRace } from '../api/start_race';
+import { startRaceing } from '../api';
 // import { io } from 'socket.io-client'
 
 
@@ -43,7 +43,7 @@ const runners_data = ref({
 const get_start_race = async () => {
     loading_running.value = true
 
-    const respons = await startRace();
+    const respons = await startRaceing();
     
     console.log(respons)
 

@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { ApiClient } from "@/api/Client";
 
 
-export const startRace = async () => {
+export const startRaceing = async () => {
     try {
       const { data: response } = await ApiClient({
         method: "GET",
