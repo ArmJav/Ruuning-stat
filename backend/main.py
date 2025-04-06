@@ -4,7 +4,7 @@ from fastapi_socketio import SocketManager
 from models import into_race,engine
 import asyncio
 
-from backend.functions import get_probability_vector, generate_random_statistics, \
+from functions import get_probability_vector, generate_random_statistics, \
     get_first_or_second_or_third, simulate_race_with_physics, get_athlete_params, simulate_races
 
 app = FastAPI(description='API по сбору статистик о забегах', version='0.1.0')
