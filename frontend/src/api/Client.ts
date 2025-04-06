@@ -56,18 +56,7 @@ export const ApiClient = async ({
             return { data: res.data, status: res.status };
         })
         .catch((err) => {
-            if (err.response?.data?.message === "handler: no authorization header") {
-                router.push("/auth");
-            }
-
-            if (
-                err.response?.data?.message ===
-                "handler: jwt parse with claims: token has invalid claims: token is expired"
-            ) {
-                localStorage.clear();
-                router.push("/auth");
-            }
-
+            
             return {
                 data: err.response?.data,
                 status: err.response?.status,
