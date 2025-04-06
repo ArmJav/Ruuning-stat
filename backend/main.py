@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_socketio import SocketManager
-from models import into_race,engine
+from models import into_race,engine, get_race_history
 import asyncio
 
 from functions import get_probability_vector, generate_random_statistics, \
@@ -21,6 +21,12 @@ socket_manager = SocketManager(app=app)
 
 
 main_stat = generate_random_statistics(25)
+
+@app.get('/get_race_hist',
+         summary='История забегов',
+         tags=['Таблицы'])
+async def get_racea_history():
+    return get_race_history()
 
 @app.get("/start_race",
          summary='Старт забега',
