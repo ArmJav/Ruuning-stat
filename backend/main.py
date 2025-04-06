@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_socketio import SocketManager
-from backend.models import into_race,engine
+from models import into_race,engine
 import asyncio
 
 from backend.functions import get_probability_vector, generate_random_statistics, \

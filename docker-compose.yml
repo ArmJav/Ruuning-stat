@@ -58,17 +58,6 @@ services:
     ports:
       - "5432:5432"
 
-    entrypoint: >
-      sh -c "
-        docker-entrypoint.sh postgres & 
-        while ! pg_isready -U ${POSTGRES_USER}; do
-          echo 'Waiting for database to be ready...';
-          sleep 2;
-        done;
-        echo 'POSTGRES_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}' >> /backend/.env;
-        wait
-      "
-
 volumes:
   pg_data:
     driver: local
