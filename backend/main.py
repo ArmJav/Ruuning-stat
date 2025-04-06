@@ -1,51 +1,103 @@
-from random import shuffle
+from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi_socketio import SocketManager
+from backend.models import into_race,engine
+import asyncio
+
+from backend.functions import get_probability_vector, generate_random_statistics, \
+    get_first_or_second_or_third, simulate_race_with_physics, get_athlete_params, simulate_races
+
+app = FastAPI(description='API по сбору статистик о забегах', version='0.1.0')
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+socket_manager = SocketManager(app=app)
 
 
-# Генерируем n случайных забегов
-def generate_random_statistics(n: int) -> list[list]:
-    history = []
-    places = [1, 2, 3, 4, 5, 6]
-    for i in range(n):
-        shuffle(places)
-        history.append(places[:])
-    return history
+main_stat = generate_random_statistics(25)
+
+@app.get("/start_race",
+         summary='Старт забега',
+         tags=['Визуализация забега'])
+async def start_race(background_tasks: BackgroundTasks):
+    athlete_params = get_athlete_params()
+    places, progress = simulate_race_with_physics(athlete_params)
+
+    places = {v:k for k,v in places.items()}
+
+    out = []
+    for i in range(1,7):
+        out.append(int(places[i][-1:]))
+  
+
+    for pl1, pl2, pl3, pl4, pl5, pl6 in zip(list(progress.values())[0], list(progress.values())[1],list(progress.values())[2],list(progress.values())[3],list(progress.values())[4],list(progress.values())[5]):
+        await asyncio.sleep(1)
+        await socket_manager.emit('update_position',pl1, pl2, pl3, pl4, pl5, pl6)
+
+    into_race(engine=engine,races_data=out)
+
+    return progress,places
 
 
-# Функция для расчета вероятности каждого места для каждого участника
-def get_probability_vector(history: list[list]) -> dict:
-    n = len(history)
-    probs = {"pl1": [0, 0, 0, 0, 0, 0], "pl2": [0, 0, 0, 0, 0, 0], "pl3": [0, 0, 0, 0, 0, 0], "pl4": [0, 0, 0, 0, 0, 0],
-             "pl5": [0, 0, 0, 0, 0, 0], "pl6": [0, 0, 0, 0, 0, 0]}
-    for i in history:
-        for j in range(6):
-            probs["pl" + str(i[j])][j] += 1
-    for i in range(6):
-        probs["pl" + str(i + 1)] = [round(j/n,2) for j in probs["pl" + str(i + 1)]]
-    return probs
+@app.get('/get_probability',
+         summary='Получение всех вероятностей',
+         tags=['Таблицы'])
+async def get_probability():
+    return get_probability_vector()
 
 
-# Функция для расчета 1-ого или 2-ого места по номеру игрока
-def get_first_or_second(player: int, probs: dict) -> float:
-    return probs["pl" + str(player)][0] + probs["pl" + str(player)][1]
+@app.get('/pair_stat',
+         summary='Вычисление парной статистики для любой пары учеников',
+         tags=['Таблицы'])
+async def get_probability_pair():
+    prob = get_probability_vector()
+    new = {}
+
+    for i in range(0,6):
+        adsa = []
+        for j in range(0,6):
+            if i != j:
+                adsa.append(prob['pl'+str(i+1)][0]*prob['pl' +str(j+1)][1])
+            else:
+                adsa.append(0)
+        new['pl' + str(i+1)] = adsa
+
+    return new        
+    
+@app.get('/first_sec_thrid/',
+         summary='Для расчета 1-ого или 2-ого или 3-его места по номеру игрока',
+         tags=['Таблицы'])
+async def get_first_or_second_or_third():
+    prob = get_probability_vector()
+
+    rez = {}
+
+    for i in range(0,6):
+        player = i +1
+        rez['pl' + str(i+1)] = prob["pl" + str(player)][0] + prob["pl" + str(player)][1] + prob["pl" + str(player)][2]
 
 
-# Функция для расчета 1-ого или 2-ого или 3-его места по номеру игрока
-def get_first_or_second_or_third(player: int, probs: dict) -> float:
-    return probs["pl" + str(player)][0] + probs["pl" + str(player)][1] + probs["pl" + str(player)][2]
+    return rez
 
+@app.get('/fir_sec',
+         summary='Для расчета 1-ого или 2-ого места по номеру игрока',
+         tags=['Таблицы'])
+async def get_first_or_second():
+    prob = get_probability_vector()
+    rez = {}
+    for i in range(0,6):
+        player = i +1
+        rez['pl' + str(i+1)] = prob["pl" + str(player)][0] + prob["pl" + str(player)][1]
 
-# Функция для вычисления парной статистики для любой пары учеников
-def get_pair_statistics(player1: int, player2: int, probs: dict) -> float:
-    return round(probs["pl" + str(player1)][0] * probs["pl" + str(player2)][1]
-            + probs["pl" + str(player1)][1] * probs["pl" + str(player2)][0],2)
+    return rez
 
-# Мат ожидание места в следующем забеге (сила)
-def get_strength(probs: dict) -> dict:
-    res = dict()
-    for i in range(1, 7):
-        summ = 0
-        for j in range(1, 7):
-            summ += probs['pl' + str(i)][j - 1] * (7 - j)
-        res['pl' + str(i)] = summ
-    return res
+if __name__ == "__main__":
+    import uvicorn
 
+    uvicorn.run(app, host="0.0.0.0", port=8000)
