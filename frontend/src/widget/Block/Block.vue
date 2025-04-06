@@ -18,6 +18,7 @@ defineProps<Props>()
     </div>
     <div v-else class="w-full min-h-[250px] bg-figma-green rounded-[20px] p-3 text-white text-[20px] flex flex-col items-start" :style="{width: widht_block}">
         <p v-if="title" class="text-[30px]">{{ title }}</p>
+        
         <slot>
 
         </slot>

@@ -7,6 +7,7 @@ import { Running } from '@/components/Running';
 <template>
     <Headers/>
     <div class="mx-[70px] phone">
+        <p class="text-white mx-auto mt-10 text-center text-[30px]">ПОДРОБНАЯ СТАТИСТИКА ЗАБЕГОВ</p>
         <Statistics/>
         <p class="text-white mx-auto mt-10 text-center text-[30px]">LIVE-ТРАНСЛЯЦИЯ ЗАБЕГА</p>
         <Running/>

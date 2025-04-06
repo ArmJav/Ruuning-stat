@@ -12,7 +12,7 @@ import router from "@/router";
       <!-- <h1 class="text-figma-green">Vuetopia</h1> -->
 
     </div>
-    <p class="cursor-pointer text-shadow-xl">ХАРАКТЕРИСТИКА</p>
+    <p class="cursor-pointer text-shadow-xs text-[25px]">ХАРАКТЕРИСТИКА</p>
   </div>
   <a-divider class="bg-white" style="margin-block: 10px;"></a-divider>
 
