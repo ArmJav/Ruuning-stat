@@ -5,13 +5,28 @@ import { LoadingOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 import runner_svg from '@/assets/runner_svg.vue';
 import runnersvg_2 from '@/assets/runnersvg_2.vue';
 import { message } from 'ant-design-vue';
+
+import { io } from 'socket.io-client'
+
+
+// onMounted(() => {
+//   socket.on('positions', (data: Runner[]) => {
+//     runners.value = data
+//   })
+// })
+
+// onBeforeUnmount(() => {
+//   socket.disconnect()
+// })
+
 interface Runner {
     id: number
     name: string
     key: keyof typeof runners_data.value
     position: number
-    color: string
 }
+
+
 const loading_running = ref<boolean>(false)
 const runners_data = ref({
     runner_one: 0,
@@ -25,13 +40,16 @@ const runners_data = ref({
 )
 
 const runners = ref<Runner[]>([
-    { id: 1, name: 'У1', key: 'runner_one', position: 0, color: '#FF6B6B' },
-    { id: 2, name: 'У2', key: 'runner_two', position: 0, color: '#4ECDC4' },
-    { id: 3, name: 'У3', key: 'runner_three', position: 0, color: '#FFD93D' },
-    { id: 4, name: 'У4', key: 'runner_four', position: 0, color: '#1A759F' },
-    { id: 5, name: 'У5', key: 'runner_five', position: 0, color: '#A8DADC' },
-    { id: 6, name: 'У6', key: 'runner_six', position: 0, color: '#F28482' }
+    { id: 1, name: 'У1', key: 'runner_one', position: 0 },
+    { id: 2, name: 'У2', key: 'runner_two', position: 0 },
+    { id: 3, name: 'У3', key: 'runner_three', position: 0 },
+    { id: 4, name: 'У4', key: 'runner_four', position: 0 },
+    { id: 5, name: 'У5', key: 'runner_five', position: 0 },
+    { id: 6, name: 'У6', key: 'runner_six', position: 0 }
 ])
+
+// const socket = io('http://localhost:3000') // Укажи свой адрес, если не локал
+
 
 const resetProgress = () => {
     runners_data.value = {
@@ -66,10 +84,20 @@ const startRace = () => {
     }, 1000)
 }
 
+
+// const startRaceSocket = () => {
+//     socket.on('positions', (data: Runner[]) => {
+//         runners.value = data
+//     })
+// }
+
 </script>
 
 <template>
     <div class="py-[20px] flex flex-col gap-3 items-start">
+        <a-modal>
+            
+        </a-modal>
         <div class="flex justify-center gap-3 items-center">
             <button v-if="!loading_running" @click="startRace"
                 class="bg-[#29A851] h-[40px] w-[240px] text-white rounded-[15px] cursor-pointer hover:opacity-35 active:bg-[#5CD683] active:opacity-100 transition duration-300  ">
@@ -118,38 +146,38 @@ const startRace = () => {
                     <div class="w-full h-full flex flex-col gap-[30px] relative">
                         <div class="runner h-[28px] bg-[#CF1322] transition-width"
                             :style="{ width: String(runners_data.runner_one) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#CF1322"
+                            <runnersvg_2 class="w-fit h-[28px] absolute right-0 transition-left" color="#CF1322"
                             :style="{ left: String(runners_data.runner_one) + '%' }" />
 
                         </div>
 
                         <div class="runner h-[28px] bg-[#C4218A] transition-width"
                             :style="{ width: String(runners_data.runner_two) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#C4218A"
+                            <runnersvg_2 class="w-fit h-[28px] absolute right-0 transition-left" color="#C4218A"
                             :style="{ left: String(runners_data.runner_two) + '%' }" />
                         </div>
 
                         <div class="runner h-[28px] bg-[#08A4C4] transition-width"
                             :style="{ width: String(runners_data.runner_three) + '%'}">
-                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#08A4C4"
+                            <runnersvg_2 class="w-fit h-[28px] absolute right-0 transition-left" color="#08A4C4"
                             :style="{ left: String(runners_data.runner_three) + '%' }" />
                         </div>
 
                         <div class="runner h-[28px] bg-[#D78739] transition-width"
                             :style="{ width: String(runners_data.runner_four) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#D78739"
+                            <runnersvg_2 class="w-fit h-[28px] absolute right-0 transition-left" color="#D78739"
                             :style="{ left: String(runners_data.runner_four) + '%' }" />
                         </div>
 
                         <div class="runner h-[28px] bg-green-400 transition-width"
                             :style="{ width: String(runners_data.runner_five) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#05df72"
+                            <runnersvg_2 class="w-fit h-[28px] absolute right-0 transition-left" color="#05df72"
                             :style="{ left: String(runners_data.runner_five) + '%' }" />
                         </div>
 
                         <div class="runner h-[28px] bg-blue-700 transition-width"
                             :style="{ width: String(runners_data.runner_six) + '%' }">
-                            <runnersvg_2 class="w-fit h-[28px] sticky transition-left" color="#1447e6"
+                            <runnersvg_2 class="w-fit h-[28px] absolute right-0 transition-left" color="#1447e6"
                             :style="{ left: String(runners_data.runner_six) + '%' }" />
                         </div>
                     </div>
