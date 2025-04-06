@@ -3,3 +3,4 @@ fastapi-socketio
 psycopg2
 sqlalchemy
 dotenv
+uvicorn
