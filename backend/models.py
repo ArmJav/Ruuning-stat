@@ -4,10 +4,10 @@ from sqlalchemy import create_engine, Column, Integer, DateTime, ARRAY, Float, i
 from sqlalchemy.orm import sessionmaker,declarative_base
 from datetime import datetime,timedelta
 from time import sleep
-import random
 from dotenv import load_dotenv
 from pathlib import Path
 import os
+import random
 
 # Создаем базовый класс для моделей
 Base = declarative_base()
@@ -17,6 +17,7 @@ load_dotenv(dotenv_path=env_path)
 if (DATABASE_URL := os.getenv("DATABASE_URL")) is None:
     raise ValueError("DATABASE_URL не установлен")
 engine = create_engine(DATABASE_URL)
+
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -40,17 +41,6 @@ class RaceResult(Base):
     place_ids = Column(ARRAY(Integer))  # Массив с данными о местах
     created_at_time = Column(DateTime, default=datetime.utcnow)
 
-def get_race_history():
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    # Получение всех значений из столбца race_id
-    race_ids = session.query(RaceResult.place_ids).all()
-
-    race_ids_list = [race_id[0] for race_id in race_ids]
-
-    return race_ids_list
-
 def create_database(db_name, user, password, host='localhost'):
     cursor = None
     conn = None
@@ -71,6 +61,17 @@ def create_database(db_name, user, password, host='localhost'):
             cursor.close()
         if conn is not None:
             conn.close()
+
+def get_race_history():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    # Получение всех значений из столбца race_id
+    race_ids = session.query(RaceResult.place_ids).all()
+
+    race_ids_list = [race_id[0] for race_id in race_ids]
+
+    return race_ids_list
 
 def into_race(engine,races_data):
     Session = sessionmaker(bind=engine)
@@ -190,12 +191,7 @@ def athlet_created():
 
 # Основной код
 if __name__ == "__main__": 
-    env_path = Path('.') / '.env'
-    load_dotenv(dotenv_path=env_path)
-
-    if (DATABASE_URL := os.getenv("DATABASE_URL")) is None:
-        raise ValueError("DATABASE_URL не установлен")
-    create_engine(DATABASE_URL)
+    create_database(DB_NAME, USER, PASSWORD)
     inspector = inspect(engine)
     if 'athletes' not in inspector.get_table_names():
         create_tables(DATABASE_URL)
