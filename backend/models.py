@@ -40,6 +40,17 @@ class RaceResult(Base):
     place_ids = Column(ARRAY(Integer))  # Массив с данными о местах
     created_at_time = Column(DateTime, default=datetime.utcnow)
 
+def get_race_history():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    # Получение всех значений из столбца race_id
+    race_ids = session.query(RaceResult.place_ids).all()
+
+    race_ids_list = [race_id[0] for race_id in race_ids]
+
+    return race_ids_list
+
 def create_database(db_name, user, password, host='localhost'):
     cursor = None
     conn = None
