@@ -1,6 +1,6 @@
 from random import shuffle
 import random
-from backend.models import engine,get_fiz, get_race_history
+from models import engine,get_fiz, get_race_history
 
 
 # Генерируем n случайных забегов
