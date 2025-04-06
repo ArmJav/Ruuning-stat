@@ -190,7 +190,12 @@ def athlet_created():
 
 # Основной код
 if __name__ == "__main__": 
-    create_database(DB_NAME, USER, PASSWORD)
+    env_path = Path('.') / '.env'
+    load_dotenv(dotenv_path=env_path)
+
+    if (DATABASE_URL := os.getenv("DATABASE_URL")) is None:
+        raise ValueError("DATABASE_URL не установлен")
+    create_engine(DATABASE_URL)
     inspector = inspect(engine)
     if 'athletes' not in inspector.get_table_names():
         create_tables(DATABASE_URL)

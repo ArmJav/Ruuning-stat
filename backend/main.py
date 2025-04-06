@@ -22,28 +22,28 @@ socket_manager = SocketManager(app=app)
 
 main_stat = generate_random_statistics(25)
 
-# @app.get('/get_race_hist',
-#          summary='История забегов',
-#          tags=['Таблицы'])
-# async def get_racea_history():
-#     return get_race_history()
+@app.get('/get_race_hist',
+         summary='История забегов',
+         tags=['Таблицы'])
+async def get_racea_history():
+    return get_race_history()
 
-# @app.get("/start_race",
-#          summary='Старт забега',
-#          tags=['Визуализация забега'])
-# async def start_race():
-#     athlete_params = get_athlete_params()
-#     places, progress = simulate_race_with_physics(athlete_params)
+@app.get("/start_race",
+         summary='Старт забега',
+         tags=['Визуализация забега'])
+async def start_race():
+    athlete_params = get_athlete_params()
+    places, progress = simulate_race_with_physics(athlete_params)
 
-#     places = {v:k for k,v in places.items()}
+    places = {v:k for k,v in places.items()}
 
-#     out = []
-#     for i in range(1,7):
-#         out.append(int(places[i][-1:]))
+    out = []
+    for i in range(1,7):
+        out.append(int(places[i][-1:]))
   
-#     into_race(engine=engine,races_data=out)
+    into_race(engine=engine,races_data=out)
 
-#     return progress,places
+    return progress,places
 
 
 @app.get('/get_probability',
