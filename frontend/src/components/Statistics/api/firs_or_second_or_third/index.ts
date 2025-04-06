@@ -1,21 +1,13 @@
 import { AxiosError } from "axios";
 import { ApiClient } from "@/api/Client";
 
-interface ResponseBody {
-    pl1: number[] | null,
-    pl2: number[] | null,
-    pl3: number[] | null,
-    pl4: number[] | null,
-    pl5: number[] | null,
-    pl6: number[] | null,
-    
-  }
+
   
-  export const getFirstOrSecond = async (): Promise<ResponseBody> => {
+  export const getFirstOrThrid = async () => {
     try {
       const { data: response } = await ApiClient({
         method: "GET",
-        url: `first_or_second_or_third`,
+        url: `first_sec_thrid`,
       });
   
 

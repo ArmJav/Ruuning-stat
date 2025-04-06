@@ -25,7 +25,7 @@ main_stat = generate_random_statistics(25)
 @app.get("/start_race",
          summary='Старт забега',
          tags=['Визуализация забега'])
-async def start_race(background_tasks: BackgroundTasks):
+async def start_race():
     athlete_params = get_athlete_params()
     places, progress = simulate_race_with_physics(athlete_params)
 
@@ -35,11 +35,6 @@ async def start_race(background_tasks: BackgroundTasks):
     for i in range(1,7):
         out.append(int(places[i][-1:]))
   
-
-    for pl1, pl2, pl3, pl4, pl5, pl6 in zip(list(progress.values())[0], list(progress.values())[1],list(progress.values())[2],list(progress.values())[3],list(progress.values())[4],list(progress.values())[5]):
-        await asyncio.sleep(1)
-        await socket_manager.emit('update_position',pl1, pl2, pl3, pl4, pl5, pl6)
-
     into_race(engine=engine,races_data=out)
 
     return progress,places

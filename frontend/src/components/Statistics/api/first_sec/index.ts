@@ -1,13 +1,13 @@
 import { AxiosError } from "axios";
 import { ApiClient } from "@/api/Client";
-import type { ResponseBody } from "../../model";
+
 
   
-  export const getProbability = async (): Promise<ResponseBody> => {
+  export const getFirstSec = async () => {
     try {
       const { data: response } = await ApiClient({
         method: "GET",
-        url: `get_probability`,
+        url: `fir_sec`,
       });
   
 

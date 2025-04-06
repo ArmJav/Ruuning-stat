@@ -2,11 +2,10 @@
 import { Block } from '@/widget/Block';
 import { ref } from 'vue';
 import { LoadingOutlined, DeleteOutlined } from '@ant-design/icons-vue';
-import runner_svg from '@/assets/runner_svg.vue';
+// import runner_svg from '@/assets/runner_svg.vue';
 import runnersvg_2 from '@/assets/runnersvg_2.vue';
 import { message } from 'ant-design-vue';
-
-import { io } from 'socket.io-client'
+// import { io } from 'socket.io-client'
 
 
 // onMounted(() => {
@@ -48,7 +47,7 @@ const runners = ref<Runner[]>([
     { id: 6, name: 'У6', key: 'runner_six', position: 0 }
 ])
 
-// const socket = io('http://localhost:3000') // Укажи свой адрес, если не локал
+// const socket = io('http://109.73.193.63/api') // Укажи свой адрес, если не локал
 
 
 const resetProgress = () => {

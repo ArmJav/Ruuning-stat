@@ -3,11 +3,11 @@ import { ApiClient } from "@/api/Client";
 import type { ResponseBody } from "../../model";
 
   
-  export const getProbability = async (): Promise<ResponseBody> => {
+  export const getPairStat = async (): Promise<ResponseBody> => {
     try {
       const { data: response } = await ApiClient({
         method: "GET",
-        url: `get_probability`,
+        url: `pair_stat`,
       });
   
 
