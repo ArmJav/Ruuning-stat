@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+@layer utilities {
+  .vertical-rl {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .vertical-lr {
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+  }
+
+  .transition-width {
+    transition: width 1s ease-in-out;
+  }
+
+  .transition-left {
+    transition: left 1s ease-in-out;
+  }
+}
+
 @font-face {
   font-family: benzin;
   src: url(./benzin-semibold.otf);

@@ -1,77 +1,51 @@
-import numpy as np
-from collections import Counter
+from random import shuffle
 
-# История забегов
-# history = {
-#     'У1': [1, 2, 1, 3, 2, 1],
-#     'У2': [3, 4, 5, 2, 6, 4],
-#     'У3': [6, 5, 6, 4, 5, 6],
-#     'У4': [2, 1, 2, 1, 3, 2],
-#     'У5': [4, 2, 4, 5, 2, 3],
-#     'У6': [5, 6, 3, 6, 1, 5],
-# }
 
-history = {
-    'У1': [1],
-    'У2': [3],
-    'У3': [6],
-    'У4': [2],
-    'У5': [4],
-    'У6': [5],
-}
+# Генерируем n случайных забегов
+def generate_random_statistics(n: int) -> list[list]:
+    history = []
+    places = [1, 2, 3, 4, 5, 6]
+    for i in range(n):
+        shuffle(places)
+        history.append(places[:])
+    return history
+
 
 # Функция для расчета вероятности каждого места для каждого участника
-def get_place_distribution(history):
-    dist = {}
-    for runner, results in history.items():
-        count = Counter(results)
-        total = len(results)
-        dist[runner] = {place: count.get(place, 0) / total for place in range(1, 7)}
-    return dist
+def get_probability_vector(history: list[list]) -> dict:
+    n = len(history)
+    probs = {"pl1": [0, 0, 0, 0, 0, 0], "pl2": [0, 0, 0, 0, 0, 0], "pl3": [0, 0, 0, 0, 0, 0], "pl4": [0, 0, 0, 0, 0, 0],
+             "pl5": [0, 0, 0, 0, 0, 0], "pl6": [0, 0, 0, 0, 0, 0]}
+    for i in history:
+        for j in range(6):
+            probs["pl" + str(i[j])][j] += 1
+    for i in range(6):
+        probs["pl" + str(i + 1)] = [round(j/n,2) for j in probs["pl" + str(i + 1)]]
+    return probs
 
-# Функция для расчета силы участника
-def calculate_strength(distribution):
-    weights = {1: 1.0, 2: 0.8, 3: 0.6, 4: 0.4, 5: 0.2, 6: 0.0}
-    strengths = {}
-    for runner, probs in distribution.items():
-        strengths[runner] = sum(weights[place] * probs.get(place, 0) for place in range(1, 7))
-    return strengths
 
-# Генерация забега с учетом силы участников
-def generate_weighted_race(strengths):
-    runners = list(strengths.keys())
-    scores = np.array([strengths[r] for r in runners])
-    
-    # Добавляем случайность (шум) для более разнообразных результатов
-    noisy_scores = scores + np.random.normal(0, 0.25, size=scores.shape)
+# Функция для расчета 1-ого или 2-ого места по номеру игрока
+def get_first_or_second(player: int, probs: dict) -> float:
+    return probs["pl" + str(player)][0] + probs["pl" + str(player)][1]
 
-    # Сортируем участников по величине noisy_scores (чем выше сила, тем выше место)
-    sorted_runners = [r for _, r in sorted(zip(-noisy_scores, runners))]
 
-    return {runner: place for place, runner in enumerate(sorted_runners, start=1)}
+# Функция для расчета 1-ого или 2-ого или 3-его места по номеру игрока
+def get_first_or_second_or_third(player: int, probs: dict) -> float:
+    return probs["pl" + str(player)][0] + probs["pl" + str(player)][1] + probs["pl" + str(player)][2]
 
-# Симуляция 10 забегов
-def simulate_races(num_races=10):
-    global history
 
-    for race in range(num_races):
-        # print(f"Забег {race + 1}")
-        
-        # Получаем распределение мест для каждого участника
-        dist = get_place_distribution(history)
-        
-        # Рассчитываем силу участников
-        strengths = calculate_strength(dist)
-        
-        # Генерируем новый забег
-        result = generate_weighted_race(strengths)
-        print(result)
-        
-        # Обновляем историю результатов
-        for runner, place in result.items():
-            history[runner].append(place)
-        
-        print(f"Обновленная история:\n{history}\n")
+# Функция для вычисления парной статистики для любой пары учеников
+def get_pair_statistics(player1: int, player2: int, probs: dict) -> float:
+    return round(probs["pl" + str(player1)][0] * probs["pl" + str(player2)][1]
+            + probs["pl" + str(player1)][1] * probs["pl" + str(player2)][0],2)
 
-# Симуляция 10 забегов
-simulate_races(10)
+# Мат ожидание места в следующем забеге (сила)
+def get_strength(probs: dict) -> dict:
+    res = dict()
+    for i in range(1, 7):
+        summ = 0
+        for j in range(1, 7):
+            summ += probs['pl' + str(i)][j - 1] * (7 - j)
+        res['pl' + str(i)] = summ
+    return res
+

@@ -10,7 +10,7 @@ defineProps<Props>()
 
 
 <template>
-    <div v-if="!widht_block" class="max-w-[510px] w-full min-h-[250px] bg-figma-green rounded-[20px] p-3 text-white text-[20px] flex flex-col items-start">
+    <div v-if="!widht_block" class="max-w-[520px] w-full min-h-[250px] bg-figma-green rounded-[20px] p-3 text-white text-[20px] flex flex-col items-start">
         <p v-if="title">{{ title }}</p>
         <slot>
 
